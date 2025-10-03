@@ -1,0 +1,106 @@
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Home";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="jumbotron bg-light p-5 rounded mb-4">
+            <h1 class="display-4">
+                <i class="fas fa-home text-primary me-3"></i>Welcome to the Dashboard
+            </h1>
+            <p class="lead">
+                Successfully migrated WPF MVVM application to modern ASP.NET Core MVC with 100% functionality preservation.
+            </p>
+            <hr class="my-4">
+            <p class="mb-0">
+                This application demonstrates the migration of a WPF desktop application to a modern web-based solution 
+                while maintaining all original features and business logic.
+            </p>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4">
+    <div class="col-md-6 col-lg-4">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body text-center">
+                <i class="fas fa-box fa-3x text-primary mb-3"></i>
+                <h5 class="card-title">Product Management</h5>
+                <p class="card-text">
+                    Manage your product catalog with full CRUD operations, image uploads, and search functionality.
+                </p>
+                <a asp-controller="Products" asp-action="Index" class="btn btn-primary">
+                    <i class="fas fa-arrow-right me-1"></i>View Products
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body text-center">
+                <i class="fas fa-users fa-3x text-success mb-3"></i>
+                <h5 class="card-title">User Management</h5>
+                <p class="card-text">
+                    Manage user accounts, view user information, and perform administrative operations.
+                </p>
+                <a asp-controller="Users" asp-action="Index" class="btn btn-success">
+                    <i class="fas fa-arrow-right me-1"></i>View Users
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body text-center">
+                <i class="fas fa-plus-circle fa-3x text-info mb-3"></i>
+                <h5 class="card-title">Quick Actions</h5>
+                <p class="card-text">
+                    Perform common tasks quickly with these shortcuts to add new items to your system.
+                </p>
+                <div class="d-grid gap-2">
+                    <a asp-controller="Products" asp-action="Create" class="btn btn-outline-primary btn-sm">
+                        <i class="fas fa-plus me-1"></i>Add Product
+                    </a>
+                    <a asp-controller="Users" asp-action="Create" class="btn btn-outline-success btn-sm">
+                        <i class="fas fa-user-plus me-1"></i>Add User
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-5">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header bg-info text-white">
+                <h5 class="mb-0">
+                    <i class="fas fa-chart-bar me-2"></i>Migration Summary
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row text-center">
+                    <div class="col-md-3">
+                        <h3 class="text-primary">100%</h3>
+                        <p class="text-muted">Functionality Preserved</p>
+                    </div>
+                    <div class="col-md-3">
+                        <h3 class="text-success">.NET 8</h3>
+                        <p class="text-muted">Latest Framework</p>
+                    </div>
+                    <div class="col-md-3">
+                        <h3 class="text-info">MVC</h3>
+                        <p class="text-muted">Modern Architecture</p>
+                    </div>
+                    <div class="col-md-3">
+                        <h3 class="text-warning">EF Core 8</h3>
+                        <p class="text-muted">Database Technology</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,184 @@
+@model SimpleWpfToMvcApp.Web.Models.Product
+@{
+    ViewData["Title"] = "Product Details";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>
+        <i class="fas fa-box text-primary me-2"></i>Product Details
+    </h2>
+    <div>
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">
+            <i class="fas fa-edit me-2"></i>Edit Product
+        </a>
+        <a asp-action="Index" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left me-2"></i>Back to List
+        </a>
+    </div>
+</div>
+
+<div class="card shadow">
+    <div class="card-header bg-light">
+        <div class="row align-items-center">
+            <div class="col">
+                <h5 class="mb-0">
+                    <i class="fas fa-info-circle me-2"></i>Product Information
+                </h5>
+            </div>
+            <div class="col-auto">
+                @if (Model.IsActive)
+                {
+                    <span class="badge bg-success fs-6">
+                        <i class="fas fa-check me-1"></i>Active
+                    </span>
+                }
+                else
+                {
+                    <span class="badge bg-secondary fs-6">
+                        <i class="fas fa-times me-1"></i>Inactive
+                    </span>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-4 text-center mb-3">
+                @if (!string.IsNullOrEmpty(Model.ImagePath))
+                {
+                    <img src="@ImagePathHelper.ConvertToWebPath(Model.ImagePath)" alt="@Model.Name" 
+                         class="img-fluid rounded shadow-sm" style="max-height: 300px;" />
+                }
+                else
+                {
+                    <div class="bg-light d-flex align-items-center justify-content-center rounded shadow-sm" 
+                         style="height: 300px;">
+                        <div class="text-center text-muted">
+                            <i class="fas fa-image fa-4x mb-3"></i>
+                            <p>No image available</p>
+                        </div>
+                    </div>
+                }
+            </div>
+            <div class="col-md-8">
+                <dl class="row">
+                    <dt class="col-sm-3">
+                        <i class="fas fa-tag me-2"></i>Name:
+                    </dt>
+                    <dd class="col-sm-9">
+                        <h4 class="text-primary mb-0">@Model.Name</h4>
+                    </dd>
+
+                    <dt class="col-sm-3">
+                        <i class="fas fa-barcode me-2"></i>SKU:
+                    </dt>
+                    <dd class="col-sm-9">
+                        <code class="text-primary fs-5">@Model.SKU</code>
+                    </dd>
+
+                    <dt class="col-sm-3">
+                        <i class="fas fa-dollar-sign me-2"></i>Price:
+                    </dt>
+                    <dd class="col-sm-9">
+                        <h3 class="text-success mb-0">@Model.Price.ToString("C")</h3>
+                    </dd>
+
+                    <dt class="col-sm-3">
+                        <i class="fas fa-align-left me-2"></i>Description:
+                    </dt>
+                    <dd class="col-sm-9">
+                        @if (!string.IsNullOrEmpty(Model.Description))
+                        {
+                            <p class="mb-0">@Model.Description</p>
+                        }
+                        else
+                        {
+                            <em class="text-muted">No description provided</em>
+                        }
+                    </dd>
+
+                    <dt class="col-sm-3">
+                        <i class="fas fa-toggle-on me-2"></i>Status:
+                    </dt>
+                    <dd class="col-sm-9">
+                        @if (Model.IsActive)
+                        {
+                            <span class="badge bg-success">
+                                <i class="fas fa-check me-1"></i>Active - Available for sale
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-secondary">
+                                <i class="fas fa-times me-1"></i>Inactive - Not available for sale
+                            </span>
+                        }
+                    </dd>
+
+                    <dt class="col-sm-3">
+                        <i class="fas fa-key me-2"></i>Product ID:
+                    </dt>
+                    <dd class="col-sm-9">
+                        <code>@Model.Id</code>
+                    </dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+    <div class="card-footer bg-light">
+        <div class="row">
+            <div class="col">
+                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">
+                    <i class="fas fa-edit me-2"></i>Edit Product
+                </a>
+                <button type="button" class="btn btn-danger" onclick="confirmDelete(@Model.Id, '@Model.Name')">
+                    <i class="fas fa-trash me-2"></i>Delete Product
+                </button>
+            </div>
+            <div class="col-auto">
+                <a asp-action="Index" class="btn btn-outline-secondary">
+                    <i class="fas fa-arrow-left me-2"></i>Back to List
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="fas fa-exclamation-triangle text-warning me-2"></i>Confirm Delete
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete the product: <strong id="productName"></strong>?</p>
+                <div class="alert alert-warning">
+                    <i class="fas fa-info-circle me-2"></i>This action will mark the product as inactive and cannot be undone.
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <form id="deleteForm" method="post" class="d-inline">
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="btn btn-danger">
+                        <i class="fas fa-trash me-2"></i>Delete Product
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function confirmDelete(productId, productName) {
+            document.getElementById('productName').textContent = productName;
+            document.getElementById('deleteForm').action = '@Url.Action("Delete")' + '/' + productId;
+            new bootstrap.Modal(document.getElementById('deleteModal')).show();
+        }
+    </script>
+}
