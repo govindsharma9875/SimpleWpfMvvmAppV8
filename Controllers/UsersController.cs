@@ -54,7 +54,7 @@ public class UsersController(
         if (await _userRepository.EmailExistsAsync(user.Email))
         {
             ModelState.AddModelError(nameof(user.Email), "Email already exists. Please enter a unique email address.");
-            return View(user);
+            //return View(user);
         }
 
         try
@@ -64,7 +64,7 @@ public class UsersController(
                 user.Name, User.Identity?.Name);
             
             TempData["SuccessMessage"] = "User created successfully!";
-            return RedirectToAction(nameof(Index));
+            //return RedirectToAction(nameof(Index));
         }
         catch (Exception ex)
         {
